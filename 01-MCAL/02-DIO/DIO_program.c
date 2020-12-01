@@ -1,15 +1,12 @@
-/********************************/
-/* Author  :Engy				*/
-/*version:  V02					*/
-/*Date :18 AUG 2020				*/
-/********************************/
-
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 
 #include "DIO_interface.h"
 #include "DIO_private.h"
 #include "DIO_config.h"
+
+
+
 
 
 void DIO_voidSetPinMode(u8 Copy_u8PinNb, u8 Copy_u8PinMode)
@@ -86,6 +83,7 @@ void DIO_voidSetPinMode(u8 Copy_u8PinNb, u8 Copy_u8PinMode)
 		}
 	}
 }
+
 void DIO_voidSetPinValue(u8 Copy_u8PinNb, u8 Copy_u8Value)
 {
 	if ((Copy_u8PinNb <= DIO_PIN34) && ((Copy_u8Value == DIO_HIGH) || (Copy_u8Value == DIO_LOW)))
@@ -99,13 +97,13 @@ void DIO_voidSetPinValue(u8 Copy_u8PinNb, u8 Copy_u8Value)
 		case PORTA:
 			if(Copy_u8Value == DIO_HIGH)
 			{
-//				SET_BIT(GPIOA->GPIO_ODR , Local_u8PinNb);
+				//				SET_BIT(GPIOA->GPIO_ODR , Local_u8PinNb);
 				GPIOA-> GPIO_BSRR = 1 << Local_u8PinNb ;
 
 			}
 			else
 			{
-//				CLR_BIT(GPIOA->GPIO_ODR , Local_u8PinNb);
+				//				CLR_BIT(GPIOA->GPIO_ODR , Local_u8PinNb);
 				GPIOA-> GPIO_BRR = 1 << Local_u8PinNb ;
 
 			}
@@ -113,12 +111,12 @@ void DIO_voidSetPinValue(u8 Copy_u8PinNb, u8 Copy_u8Value)
 		case PORTB:
 			if(Copy_u8Value == DIO_HIGH)
 			{
-//				SET_BIT(GPIOB->GPIO_ODR , Local_u8PinNb);
+				//				SET_BIT(GPIOB->GPIO_ODR , Local_u8PinNb);
 				GPIOB-> GPIO_BSRR = 1 << Local_u8PinNb ;
 			}
 			else
 			{
-//				CLR_BIT(GPIOB->GPIO_ODR , Local_u8PinNb);
+				//				CLR_BIT(GPIOB->GPIO_ODR , Local_u8PinNb);
 				GPIOB-> GPIO_BRR = 1 << Local_u8PinNb ;
 			}
 			break;
@@ -127,25 +125,24 @@ void DIO_voidSetPinValue(u8 Copy_u8PinNb, u8 Copy_u8Value)
 			{
 				if(Copy_u8Value == DIO_HIGH)
 				{
-//					SET_BIT(GPIOC->GPIO_ODR , Local_u8PinNb);
+					//					SET_BIT(GPIOC->GPIO_ODR , Local_u8PinNb);
 					GPIOC-> GPIO_BSRR = 1 << Local_u8PinNb ;
 				}
 				else
 				{
-//					CLR_BIT(GPIOC->GPIO_ODR , Local_u8PinNb);
+					//					CLR_BIT(GPIOC->GPIO_ODR , Local_u8PinNb);
 					GPIOC-> GPIO_BSRR = 1 << Local_u8PinNb ;
 
 				}
 			}
 			break;
 		}
-
 	}
 }
+
 u8 DIO_u8GetPinValue(u8 Copy_u8PinNb)
 {
 	u8 Local_u8Value = 0;
-
 	if (Copy_u8PinNb <= DIO_PIN34)
 	{
 		u8 Local_u8PortNb = Copy_u8PinNb / 16;
@@ -165,4 +162,56 @@ u8 DIO_u8GetPinValue(u8 Copy_u8PinNb)
 		}
 	}
 	return Local_u8Value;
+}
+
+void DIO_voidLock(u8 Copy_u8PinNb)
+{
+	u32 Local_u8Value =0x00010000;
+	u8 Local_u8PortNb = Copy_u8PinNb / 16;
+	u8 Local_u8PinNb  = Copy_u8PinNb % 16;
+
+	switch(Local_u8PortNb)
+	{
+	case PORTA:
+		Local_u8Value |= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOA->GPIO_LCKR=Local_u8Value;
+		/*Reset LCKK bit*/
+		GPIOA->GPIO_LCKR= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOA->GPIO_LCKR=Local_u8Value;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOA->GPIO_LCKR;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOA->GPIO_LCKR;
+		break;
+
+	case PORTB:
+		Local_u8Value |= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOB->GPIO_LCKR=Local_u8Value;
+		/*Reset LCKK bit*/
+		GPIOB->GPIO_LCKR= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOB->GPIO_LCKR=Local_u8Value;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOB->GPIO_LCKR;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOB->GPIO_LCKR;
+		break;
+
+	case PORTC:
+		Local_u8Value |= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOC->GPIO_LCKR=Local_u8Value;
+		/*Reset LCKK bit*/
+		GPIOC->GPIO_LCKR= (1<< Local_u8PinNb);
+		/*Set LCKK bit*/
+		GPIOC->GPIO_LCKR=Local_u8Value;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOC->GPIO_LCKR;
+		/*Read LCKK bit*/
+		Local_u8Value = GPIOC->GPIO_LCKR;
+		break;
+	}
 }
