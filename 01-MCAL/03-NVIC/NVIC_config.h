@@ -1,3 +1,8 @@
+/********************************/
+/*Author :	Engy Tahoon 		*/
+/*version:  V02					*/
+/*Date 	 :	22 Aug 2020			*/
+/********************************/
 
 
 #ifndef NVIC_CONFIC_H
@@ -11,7 +16,8 @@ NVIC_GROUP_0_SUB_4
 
 */
 
-#define NVIC_GROUP_SUB_DISTRIBUTION			NVIC_GROUP_2_SUB_2
+#define NVIC_GROUP_SUB_DISTRIBUTION			NVIC_GROUP_0_SUB_4
+
 
 
 
