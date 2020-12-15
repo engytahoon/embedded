@@ -7,6 +7,7 @@
 #ifndef STD_TYPES_H
 #define STD_TYPES_H
 
+
 #define NULL   ((void *)0xffff) 
 
 typedef unsigned char 		    u8	;
